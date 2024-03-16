@@ -6,6 +6,7 @@ import type { Schema } from "@/amplify/data/resource";
 
 import "@aws-amplify/ui-react/styles.css";
 import TodoCreateForm from "@/ui-components/TodoCreateForm";
+import { Button } from "@aws-amplify/ui-react";
 
 // generates data client using the Schema from BE
 const client = generateClient<Schema>();
@@ -29,6 +30,14 @@ export default function TodoList() {
         console.log(errors, newTodo);
     }
 
+    async function handleDeleteTodo(id: string) {
+        const { errors } = await client.models.Todo.delete({ id: id });
+
+        if (errors) {
+            console.error('Error deleting: ', errors);
+        }
+    }
+
     useEffect(() => {
         const sub = client.models.Todo.observeQuery().subscribe(({ items }) => setTodos([...items]));
 
@@ -43,7 +52,13 @@ export default function TodoList() {
 
             <ul>
                 {todos.map((todo) => (
-                    <li key={todo.id}>{todo.content}</li>
+                    <li key={todo.id}>
+                        {todo.content}
+                        <Button
+                            onClick={() => handleDeleteTodo(todo.id)}
+                            style={{ marginLeft: '10px' }}
+                        >Delete</Button>
+                        </li>
                 ))}
             </ul>
         </div>
