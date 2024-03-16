@@ -4,6 +4,9 @@ import { useState, useEffect } from "react";
 import { generateClient } from "aws-amplify/data";
 import type { Schema } from "@/amplify/data/resource";
 
+import "@aws-amplify/ui-react/styles.css";
+import TodoCreateForm from "@/ui-components/TodoCreateForm";
+
 // generates data client using the Schema from BE
 const client = generateClient<Schema>();
 
@@ -35,7 +38,8 @@ export default function TodoList() {
     return (
         <div>
             <h1>Todos</h1>
-            <button onClick={handleCreateTodo}>Create</button>
+            <TodoCreateForm/>
+            {/* <button onClick={handleCreateTodo}>Create</button> */}
 
             <ul>
                 {todos.map((todo) => (
